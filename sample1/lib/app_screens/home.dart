@@ -9,9 +9,9 @@ class Home extends StatelessWidget{
       child: Container(
         alignment: Alignment.center,
         color: Colors.deepPurple,
-//        width: 200.0,
-//        height: 100.0,
-//        margin: EdgeInsets.only(left: 15.0, top: 50.0 ),
+//      width: 200.0,
+//      height: 100.0,
+//      margin: EdgeInsets.only(left: 15.0, top: 50.0 ),
         child: Column(children: <Widget>[
           Row(
             children: <Widget>[
@@ -23,7 +23,6 @@ class Home extends StatelessWidget{
                 fontSize: 35.0,
                 fontFamily: 'Raleway',
                 fontWeight: FontWeight.w700,
-    //          fontStyle: FontStyle.italic,
                 color:  Colors.white,
                 ),
               )),
@@ -35,7 +34,6 @@ class Home extends StatelessWidget{
                 fontSize: 20.0,
                 fontFamily: 'Raleway',
                 fontWeight: FontWeight.w700,
-    //          fontStyle: FontStyle.italic,
                 color:  Colors.white,
                 ),
               )),
@@ -51,7 +49,6 @@ class Home extends StatelessWidget{
                 fontSize: 35.0,
                 fontFamily: 'Raleway',
                 fontWeight: FontWeight.w700,
-    //          fontStyle: FontStyle.italic,
                 color:  Colors.white,
                 ),
               )),
@@ -63,15 +60,12 @@ class Home extends StatelessWidget{
                 fontSize: 20.0,
                 fontFamily: 'Raleway',
                 fontWeight: FontWeight.w700,
-    //          fontStyle: FontStyle.italic,
                 color:  Colors.white,
                 ),
               )),
             ],
           )
         ],)
-        
-
       )
     );
     
