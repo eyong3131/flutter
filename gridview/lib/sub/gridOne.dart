@@ -32,7 +32,6 @@ class _GridOneState extends State<GridOne> {
               ),
             ),
           );
-
         }),
         ),
     );
