@@ -47,7 +47,7 @@ class _HomeState extends State<Home>with SingleTickerProviderStateMixin{
         children: <Widget>[
           new gridone.GridOne(),
           new gridtwo.GridTwo(),
-          new gridthree.Form(),
+          new gridthree.MyForm(),
         ],
       ),
     );

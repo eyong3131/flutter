@@ -1,1 +1,0 @@
-flutter run -d R58M57FG7NR
