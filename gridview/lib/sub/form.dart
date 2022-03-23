@@ -32,10 +32,13 @@ class _MyFormState extends State<MyForm> {
   }
 
   void _printConsole(){
+    // ignore: unused_local_variable
     returningData tawag = new returningData();
+    /*
     _name = inputController.text;
     tawag.setVal(_name);
     tawag.show();
+    */
   }
   
   Widget _TitleField(){
@@ -63,11 +66,14 @@ class _MyFormState extends State<MyForm> {
         ),
       validator: (String? value){
         if(value == null || value.isEmpty){
-          return "Please Enter Some Text";
+          return _name  = "Please Enter Name";
         }else{
-          _name = value;
+           _name = value;
         }
         return null;
+      },
+      onSaved: (String? value){
+        _name = value!;
       },
     );
   }
@@ -79,13 +85,12 @@ class _MyFormState extends State<MyForm> {
         ),
       validator: (value){
         if(value == null || value.isEmpty){
-          return "Please Enter Some Text";
+          return _email = "Please Enter Email";
         }else{
           _email = value;
         }
         return null;
       },
-
     );
   }
   // ignore: unused_element
@@ -144,15 +149,14 @@ class _MyFormState extends State<MyForm> {
               minimumSize: Size.fromHeight(40),
             ),
             onPressed: () {
-              print(_name);
-              print(_email);
               // Validate returns true if the form is valid, or false otherwise.
               if (_formKey.currentState!.validate()) {
                 // If the form is valid, display a snackbar. In the real world,
                 // you'd often call a server or save the information in a database.
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text("name is: $_name  \n email is: $_email"),
+                    content: Text(
+                      "name is: $_name  \n email is: $_email"),
                   ),
                 );
               }
