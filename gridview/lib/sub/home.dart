@@ -13,7 +13,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home>with SingleTickerProviderStateMixin{
 
   late TabController controller;
-  
+  final inputController = TextEditingController();
+
+
   @override
   void initState(){
     controller = new TabController(length: 3, vsync: this);
