@@ -1,0 +1,4 @@
+#basic nodejs setup
+-npm ini
+-npm install express --save
+-npm install mysql --save
