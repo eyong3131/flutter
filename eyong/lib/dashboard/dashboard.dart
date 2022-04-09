@@ -27,6 +27,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               child: Text("Title of Panel"),
             ),
+            ListTile(),
           ],
         ),
       ),

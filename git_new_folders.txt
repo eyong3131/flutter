@@ -8,5 +8,5 @@ git add projectForlderName/*
 git commit
 
 #push
-push origin master
+git push origin master
 

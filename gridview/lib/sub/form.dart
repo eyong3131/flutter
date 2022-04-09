@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 
-class MyForm extends StatefulWidget {
+class MyForm extends StatefulWidget {  
   const MyForm({ Key? key }) : super(key: key);
-
   @override
   State<MyForm> createState() => _MyFormState();
 }
@@ -13,6 +12,7 @@ class _MyFormState extends State<MyForm> {
   late String _name;
   late String _email;
   String dropdownvalue = 'One';
+
 
   final inputController = TextEditingController();
 
@@ -175,8 +175,8 @@ class returningData {
   late String _iname;
   //late String _iemail;
 
-  setVal(String _name){
-    _iname = _name;
+  setVal(String? _name){
+    _iname = _name ?? "test";
     return _iname;
   }
   void show(){
