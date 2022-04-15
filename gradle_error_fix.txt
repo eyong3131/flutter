@@ -3,3 +3,6 @@
 
 #on root/android/build.gradle  
     on dependecies add {classpath 'com.android.tools.build:gradle:4.0.2' }
+    
+#Running flutter on web 
+    flutter run -d web-server
