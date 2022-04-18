@@ -8,16 +8,45 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // ignore: unused_element
+  _screenWidth() {
+    double? myWidth;
+    myWidth = MediaQuery.of(context).size.width * 0.25;
+    return myWidth;
+    //MediaQuery.of(context).size.width < 650 ? 150 : 250
+  }
+
+  // ignore: unused_element
+  _screenHeight() {
+    double? myHeight;
+    myHeight = MediaQuery.of(context).size.height * 0.25;
+    return myHeight;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Waiting Area"),
+        title: Text(
+          "Waiting Area",
+          style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.10),
+        ),
         centerTitle: true,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.10,
       ),
-      body: _columnControl(),
+      body: _Content(),
     );
   }
+
+  Widget _Content() => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          //Row 1
+          Row(),
+        ],
+      );
+
+/* should be called in body
 
   Widget _columnControl() => Column(
           mainAxisAlignment: MediaQuery.of(context).size.width > 600
@@ -28,14 +57,14 @@ class _HomeState extends State<Home> {
             Row(children: <Widget>[
               Expanded(
                   child: Container(
-                width: 250,
-                height: 250,
+                width: _screenWidth(),
+                height: _screenHeight(),
                 color: Colors.black,
               )),
               Expanded(
                   child: Container(
-                width: 250,
-                height: 250,
+                width: _screenWidth(),
+                height: _screenHeight(),
                 color: Colors.redAccent,
               ))
             ]),
@@ -64,16 +93,17 @@ class _HomeState extends State<Home> {
             Row(children: <Widget>[
               Expanded(
                   child: Container(
-                width: 250,
-                height: 250,
+                width: _screenWidth(),
+                height: _screenHeight(),
                 color: Colors.redAccent,
               )),
               Expanded(
                   child: Container(
-                width: 250,
-                height: 250,
+                width: _screenWidth(),
+                height: _screenHeight(),
                 color: Colors.black,
               )),
             ]),
           ]);
+          */
 }
