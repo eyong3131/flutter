@@ -2,3 +2,13 @@
 -npm ini
 -npm install express --save
 -npm install mysql --save
+
+#Start Server
+-npm start server
+
+#Err missing start script
+-look for script and add this to the package json
+      "scripts": {
+            "test": "echo \"Error: no test specified\" && exit 1",
+            "start": "node app.js"
+        },

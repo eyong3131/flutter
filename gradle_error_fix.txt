@@ -6,3 +6,5 @@
     
 #Running flutter on web 
     flutter run -d web-server
+    #for specific port 
+        flutter run -d web-server --web-port=4420
