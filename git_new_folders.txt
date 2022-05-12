@@ -10,3 +10,8 @@ git commit
 #push
 git push origin master
 
+#setting up connection to remote git
+git init
+git fetch --set-upstream eyong master
+git pull --set-upstream eyong master
+git push --set-upstream eyong master
