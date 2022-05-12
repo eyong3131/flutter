@@ -1,0 +1,10 @@
+#on root/android/gradle/wrapper/gradle-wrapper-properties
+    distributionUrl=https\://services.gradle.org/distributions/gradle-6.3-all.zip
+
+#on root/android/build.gradle  
+    on dependecies add {classpath 'com.android.tools.build:gradle:4.0.2' }
+    
+#Running flutter on web 
+    flutter run -d web-server
+    #for specific port 
+        flutter run -d web-server --web-port=4420

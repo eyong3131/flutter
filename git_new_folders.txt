@@ -1,0 +1,12 @@
+#adding folder
+git add projectForlderName
+
+#stage contens
+git add projectForlderName/*
+
+#commit
+git commit
+
+#push
+git push origin master
+
