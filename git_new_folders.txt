@@ -16,5 +16,3 @@ git init
 git fetch --set-upstream eyong master
 git pull --set-upstream eyong master
 git push --set-upstream eyong master
-=======
->>>>>>> 05d45433d035102e3e1d2421e832e1187b40d5b7
