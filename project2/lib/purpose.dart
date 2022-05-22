@@ -38,6 +38,17 @@ class _PurposeState extends State<Purpose> {
   // checking for input statuses
   final _formKey = GlobalKey<FormState>();
 
+  bool getDeviceType() {
+    double ratio =
+        MediaQuery.of(context).size.width / MediaQuery.of(context).size.height;
+    print(ratio);
+    if ((ratio >= 0.45) && (ratio < 1.5) && (ratio >= 0.56) && (ratio < 1.77)) {
+      return true;
+    }
+
+    return false;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -53,6 +64,7 @@ class _PurposeState extends State<Purpose> {
     //#3 header
     var bytes = convert.utf8.encode('Transaction:Transaction');
     var base64Str = convert.base64.encode(bytes);
+    // ignore: unused_local_variable
     var header = {
       "Content-type": "application/json",
       "Accept": "application/json",
@@ -100,17 +112,25 @@ class _PurposeState extends State<Purpose> {
       builder: (BuildContext context, BoxConstraints constraints) {
         // constraints provide us with maxWidth,maxHeight etc, using
         // which we can show different widgets accordingly
+        // @Gelang Code
+        if (constraints.maxWidth <= 768) //mobile
+        {
+          return _pscreen1();
+        } else //desktop
+        {
+          return _pscreen2();
+        }
+
+        // Checking the aspect ratio instead of calculating the specific
+        // pixel width Since some smartphone has 4k resolution
+        //  still need of some polishing in this code
+        //  @Leo De Guzman
         /*
-          if (constraints.maxWidth <= 768)//mobile 
-          {
-            return _pscreen1();
-          } 
-          else//desktop
-          {
-            return _pscreen2();
-          }
-          */
-        return _pscreen1();
+        if (getDeviceType()) {
+          return _pscreen1();
+        }
+        return _pscreen2();
+        */
       },
     );
   }
@@ -134,6 +154,7 @@ class _PurposeState extends State<Purpose> {
         child: Form(
           key: _formKey,
           child: Padding(
+            // ignore: prefer_const_constructors
             padding: EdgeInsets.all(30),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

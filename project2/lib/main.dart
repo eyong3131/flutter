@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      // ignore: prefer_const_constructors
       home: Purpose()
     );
   }

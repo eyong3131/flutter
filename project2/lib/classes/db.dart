@@ -1,10 +1,13 @@
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+// ignore: unused_import
 import './json/transaction.dart';
 
+// ignore: camel_case_types
 class db {
   //late List<Transaction> json;
 
+  // ignore: unused_element
   _passData(String? id) async {
     //header
     var bytes = convert.utf8.encode('viral:viral');
