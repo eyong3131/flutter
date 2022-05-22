@@ -21,6 +21,23 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   //final PageController _pageController = PageController();
 
+  _WidgetScale(bool isText) {
+    double? scale;
+    if (isText) {
+      //still dont know how to properly implement this screens
+      if (MediaQuery.of(context).size.height >= 720 ||
+          MediaQuery.of(context).size.height <= 1024) {
+        scale = MediaQuery.of(context).size.height * 0.10;
+      }
+    } else {
+      if (MediaQuery.of(context).size.height >= 720 ||
+          MediaQuery.of(context).size.height <= 1024) {
+        scale = MediaQuery.of(context).size.height * 0.20;
+      }
+    }
+    return scale;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -51,10 +68,12 @@ class _LoginState extends State<Login> {
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.all(10.0),
-      child: const Text(
-        'Login Form',
+      child: Text(
+        'Login',
         style: TextStyle(
-            color: Colors.lightBlue, fontWeight: FontWeight.bold, fontSize: 30),
+            color: Colors.lightBlue,
+            fontWeight: FontWeight.bold,
+            fontSize: _WidgetScale(true)),
       ),
     );
   }
@@ -164,33 +183,45 @@ class _LoginState extends State<Login> {
            * this is the name field function where we called the input field
            * and other input fields
            */
-                _NameField(),
-                //_DropDown(),
-                _EmailField(),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(40),
+                Container(
+                  width: _WidgetScale(false) * 2.50,
+                  child: _NameField(),
+                ),
+                Container(
+                  width: _WidgetScale(false) * 2.50,
+                  child: _EmailField(),
+                ),
+                Container(
+                  width: _WidgetScale(false),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(40),
+                    ),
+                    onPressed: () {
+                      // Validate returns true if the form is valid, or false otherwise.
+                      if (_formKey.currentState!.validate()) {
+                        // opens the screen
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const dashboard.Dashboard()),
+                        );
+                        // If the form is valid, display a snackbar. In the real world,
+                        // you'd often call a server or save the information in a database.
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                Text("name is: $_name  \n email is: $_email"),
+                          ),
+                        );
+                      }
+                    },
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(fontSize: _WidgetScale(true) * 0.40),
+                    ),
                   ),
-                  onPressed: () {
-                    // Validate returns true if the form is valid, or false otherwise.
-                    if (_formKey.currentState!.validate()) {
-                      // opens the screen
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const dashboard.Dashboard()),
-                      );
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content:
-                              Text("name is: $_name  \n email is: $_email"),
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text('Submit'),
                 ),
                 _SignUp(),
               ],
