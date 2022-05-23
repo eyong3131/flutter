@@ -1,4 +1,6 @@
+import 'package:eyong/login/login_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import "package:hovering/hovering.dart";
 
 class Dashboard extends StatefulWidget {
@@ -26,6 +28,29 @@ class _DashboardState extends State<Dashboard> {
     return scale;
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: DrawerSet(),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        title: Text("Viral Disease Monitoring System",
+            style: TextStyle(
+                fontSize: _WidgetScale(true) * 0.60, color: Colors.black)),
+        toolbarHeight: _WidgetScale(false) * 0.60,
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
+      body: SpcMap(),
+    );
+  }
+
+  // ignore: non_constant_identifier_names, prefer_const_constructors
+  Widget SpcMap() => SizedBox(
+        width: _WidgetScale(false),
+        height: _WidgetScale(false),
+      );
+
   Widget listContainer(ListTile) => HoverWidget(
         hoverChild: Container(
           margin: const EdgeInsets.all(10),
@@ -42,28 +67,20 @@ class _DashboardState extends State<Dashboard> {
         child: ListTile,
       );
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("Viral Disease Monitoring System",
-            style: TextStyle(
-              fontSize: _WidgetScale(true) * 0.60,
-            )),
-        toolbarHeight: _WidgetScale(false) * 0.60,
-      ),
-      drawer: Drawer(
-        backgroundColor: Colors.blue[100],
+  Widget DrawerSet() => Drawer(
+        backgroundColor: Colors.blue,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue[100],
+              decoration: const BoxDecoration(
+                color: Colors.blue,
               ),
-              child: Text("Drawer Heading",
-                  style: TextStyle(fontSize: _WidgetScale(true) * 0.30)),
+              child: SizedBox(
+                width: _WidgetScale(false),
+                height: _WidgetScale(false),
+                child: Image.asset('assets/img/spc.png'),
+              ),
             ),
             listContainer(
               ListTile(
@@ -73,40 +90,42 @@ class _DashboardState extends State<Dashboard> {
                 onTap: () {
                   print("Dashboard");
                   Navigator.pop(context);
-                  /*
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const second.SecondRoute()),
-                );
-                */
                 },
               ),
             ),
             listContainer(ListTile(
-              leading: const Icon(Icons.list_alt_outlined),
-              title: Text("list",
+              leading: const Icon(Icons.document_scanner_outlined),
+              title: Text("Documents",
                   style: TextStyle(fontSize: _WidgetScale(true) * 0.30)),
               onTap: () {
-                print("Qwing List");
+                print("Documents");
                 Navigator.pop(context);
               },
             )),
             listContainer(ListTile(
-              leading: const Icon(Icons.monitor_weight_outlined),
-              title: Text("Data Entry",
+              leading: const Icon(Icons.auto_graph_outlined),
+              title: Text("Graphs",
                   style: TextStyle(fontSize: _WidgetScale(true) * 0.30)),
               onTap: () {
-                print("Monitor");
+                print("Graphs");
                 Navigator.pop(context);
               },
             )),
             listContainer(ListTile(
-              leading: const Icon(Icons.window_outlined),
-              title: Text("Window",
+              leading: const Icon(Icons.add_alert_outlined),
+              title: Text("Alert",
                   style: TextStyle(fontSize: _WidgetScale(true) * 0.30)),
               onTap: () {
-                print("Window");
+                print("Alert");
+                Navigator.pop(context);
+              },
+            )),
+            listContainer(ListTile(
+              leading: const Icon(Icons.info_outlined),
+              title: Text("About",
+                  style: TextStyle(fontSize: _WidgetScale(true) * 0.30)),
+              onTap: () {
+                print("About");
                 Navigator.pop(context);
               },
             )),
@@ -115,13 +134,13 @@ class _DashboardState extends State<Dashboard> {
               title: Text("Logout",
                   style: TextStyle(fontSize: _WidgetScale(true) * 0.30)),
               onTap: () {
-                print("Logout");
-                Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Login()),
+                );
               },
             )),
           ],
         ),
-      ),
-    );
-  }
+      );
 }

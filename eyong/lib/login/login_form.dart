@@ -68,12 +68,24 @@ class _LoginState extends State<Login> {
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.all(10.0),
-      child: Text(
-        'Login',
-        style: TextStyle(
-            color: Colors.lightBlue,
-            fontWeight: FontWeight.bold,
-            fontSize: _WidgetScale(true)),
+      //color: Colors.lightBlue,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          //Image.asset('assets/img/spc.png'),
+          Container(
+            width: _WidgetScale(false),
+            height: _WidgetScale(false),
+            child: Image.asset('assets/img/spc.png'),
+          ),
+          Text(
+            'Login',
+            style: TextStyle(
+                color: Colors.lightBlue,
+                fontWeight: FontWeight.bold,
+                fontSize: _WidgetScale(true) * 0.40),
+          ),
+        ],
       ),
     );
   }
@@ -162,38 +174,38 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        /*
         appBar: AppBar(
             centerTitle: true,
             title: const Text(
               "Practice Form",
             )),
+            */
         body: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                /**
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            /**
            * you can add multiple widgets under chilren here
            * This is the Container Part where we create a title for the forms
            */
-                _TitleField(),
-                /**
+            //_TitleField(),
+            /**
            * this is the name field function where we called the input field
            * and other input fields
            */
-                Container(
-                  width: _WidgetScale(false) * 2.50,
-                  child: _NameField(),
-                ),
-                Container(
-                  width: _WidgetScale(false) * 2.50,
-                  child: _EmailField(),
-                ),
-                Container(
-                  width: _WidgetScale(false),
-                  child: ElevatedButton(
+            _TitleField(),
+            Container(
+              width: _WidgetScale(false) * 2.25,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _NameField(),
+                  _EmailField(),
+                  ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size.fromHeight(40),
                     ),
@@ -222,12 +234,14 @@ class _LoginState extends State<Login> {
                       style: TextStyle(fontSize: _WidgetScale(true) * 0.40),
                     ),
                   ),
-                ),
-                _SignUp(),
-              ],
+                  _SignUp(),
+                ],
+              ),
             ),
-          ),
-        ));
+          ],
+        ),
+      ),
+    ));
   }
 }
 

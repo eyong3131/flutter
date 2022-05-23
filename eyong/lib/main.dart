@@ -4,6 +4,6 @@ import '../dashboard/dashboard.dart' as dashboard;
 
 void main() {
   runApp(const MaterialApp(
-    home: dashboard.Dashboard(), //login.Login(),
+    home: login.Login(), //dashboard.Dashboard(),
   ));
 }
