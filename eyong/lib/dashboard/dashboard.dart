@@ -2,6 +2,7 @@ import 'package:eyong/login/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import "package:hovering/hovering.dart";
+import '../map_class/maps.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -41,7 +42,10 @@ class _DashboardState extends State<Dashboard> {
         toolbarHeight: _WidgetScale(false) * 0.60,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: SpcMap(),
+      body: SizedBox(
+          width: _WidgetScale(false) * 12.0,
+          height: _WidgetScale(false),
+          child: Mapbox()),
     );
   }
 

@@ -35,7 +35,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   #hovering
   hovering: ^1.0.4
-
+  #Flutter map for mapbox
+  flutter_map: any
 
 dev_dependencies:
   flutter_test:
