@@ -14,11 +14,11 @@ class _MapboxState extends State<Mapbox> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Test map"),
+        title: const Text("Dashboard"),
       ),
       body: FlutterMap(
         options: MapOptions(
-          center: latLng.LatLng(51.5, -0.09),
+          center: latLng.LatLng(14.0229, 121.2827),
           zoom: 13.0,
         ),
         layers: [
@@ -31,7 +31,7 @@ class _MapboxState extends State<Mapbox> {
               'id': 'mapbox.satellite'
             },
             attributionBuilder: (_) {
-              return Text("© OpenStreetMap contributors");
+              return const Text("© OpenStreetMap contributors");
             },
           ),
           MarkerLayerOptions(

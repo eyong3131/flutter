@@ -42,18 +42,15 @@ class _DashboardState extends State<Dashboard> {
         toolbarHeight: _WidgetScale(false) * 0.60,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: SizedBox(
-          width: _WidgetScale(false) * 12.0,
-          height: _WidgetScale(false),
-          child: Mapbox()),
+      body: SpcMap(),
     );
   }
 
   // ignore: non_constant_identifier_names, prefer_const_constructors
   Widget SpcMap() => SizedBox(
-        width: _WidgetScale(false),
-        height: _WidgetScale(false),
-      );
+      width: _WidgetScale(false) * 12.0,
+      height: _WidgetScale(false) * 3.0,
+      child: Mapbox());
 
   Widget listContainer(ListTile) => HoverWidget(
         hoverChild: Container(
