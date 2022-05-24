@@ -60,7 +60,7 @@ app.post('/api/qwing/transactionPush', function (req, res) {
     });
 })
 
-/* test login
+
 app.post('/api/hash_test', function (req, res) {
     pool.query('SELECT * FROM jpdzalmy_rebago_db.hash_test', function (error, results, fields) {
         if (error) {
@@ -75,4 +75,3 @@ app.post('/api/hash_test', function (req, res) {
         };
     });
 })
-*/

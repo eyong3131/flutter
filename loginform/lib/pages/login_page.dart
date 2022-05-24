@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:loginform/pages/home_page.dart';
 //import 'package:loginform/widgets/loginbutton_widget.dart';
+
 import 'package:loginform/widgets/dropdown_widget.dart';
 import 'package:loginform/widgets/header_widget.dart';
 import 'package:loginform/widgets/forgot_widget.dart';
@@ -149,7 +150,8 @@ class _LoginpageState extends State<Loginpage> {
       "Authorization": "Basic $base64Str",
     };
     //#4 body url
-    var url = Uri.parse('http://192.168.1.3:3306/api/hash_test');
+    // ip needs to be changed on every dev device
+    var url = Uri.parse('http://192.168.1.15:3306/api/hash_test');
     var client = http.Client();
     var response = await client.post(url);
     if (response.statusCode == 200) {

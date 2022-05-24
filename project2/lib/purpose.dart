@@ -71,7 +71,7 @@ class _PurposeState extends State<Purpose> {
       "Authorization": "Basic $base64Str",
     };
     //#4 body url
-    var url = Uri.parse('http://192.168.1.3:3306/api/qwing/transactionPull');
+    var url = Uri.parse('http://192.168.1.15:3306/api/qwing/transactionPull');
     var client = http.Client();
     var response = await client.post(url);
     if (response.statusCode == 200) {
@@ -100,7 +100,7 @@ class _PurposeState extends State<Purpose> {
     };
     //body and url
     var body = convert.json.encode({'program': program, 'purpose': purpose});
-    var url = Uri.parse('http://192.168.1.3:3306/api/qwing/transactionPush');
+    var url = Uri.parse('http://192.168.1.15:3306/api/qwing/transactionPush');
     var client = http.Client();
     var response = await client.post(url, body: body, headers: header);
     if (response.statusCode == 200) {}
