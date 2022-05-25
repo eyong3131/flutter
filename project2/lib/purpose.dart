@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -19,8 +20,8 @@ class _PurposeState extends State<Purpose> {
   late List<Transaction> _json;
   late List<Transaction> _tmpjson;
 
-  bool isSubmit = false;
   bool isLoaded = false;
+  bool isSubmit = false;
   //should be a list of program as json
   final List<String> progItems = [
     'BSIT',
@@ -66,7 +67,6 @@ class _PurposeState extends State<Purpose> {
     // it will be triggered but it did not
     // @Leo De Guzman
     _loadData();
-    isSubmit ? _tmpLoadData() : () {};
   }
 
   // load data from remote or local database
@@ -93,6 +93,7 @@ class _PurposeState extends State<Purpose> {
       // eg username or email
       setState(() {
         _json = transactionFromJson(response.body);
+        print("first json loaded");
         //_json == null ? print("please wait") : print(_json[0].transactionName);
       });
     }
@@ -112,7 +113,7 @@ class _PurposeState extends State<Purpose> {
     var url = Uri.parse('http://192.168.1.3:3306/api/qwing/transactionPull');
     var client = http.Client();
     var response = await client.post(url);
-    isSubmit = true;
+
     if (response.statusCode == 200) {
       //#5 tried also removing the setState here but it is not
       // loading the json so i had to bring it back here
@@ -450,27 +451,33 @@ class _PurposeState extends State<Purpose> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      _passData(
-                          _fname, _mname, _lname, _selectedProg, _selectedPps);
-                      //isLoaded ? print("yes") : print("no");
-                      var lastIndex = _tmpjson.length;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                // do add an incremental value to the selected list
-                                QueueNum(
-                                    qnum: _selectedProg! +
-                                        ' - ' +
-                                        _tmpjson[lastIndex - 1]
-                                            .transactionId
-                                            .toString())),
-                      );
-                    }
-                  },
+                  onPressed: isSubmit
+                      ? null
+                      : () {
+                          isSubmit = true;
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            _tmpLoadData();
+                            _passData(_fname, _mname, _lname, _selectedProg,
+                                _selectedPps);
+                            //isLoaded ? print("yes") : print("no");
+                            Timer(Duration(seconds: 2), () {
+                              var lastIndex = _tmpjson.length;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        // do add an incremental value to the selected list
+                                        QueueNum(
+                                            qnum: _selectedProg! +
+                                                ' - ' +
+                                                _tmpjson[lastIndex - 1]
+                                                    .transactionId
+                                                    .toString())),
+                              );
+                            });
+                          }
+                        },
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
