@@ -40,10 +40,13 @@ app.post('/api/qwing/transactionPull', function (req, res) {
 })
 
 app.post('/api/qwing/transactionPush', function (req, res) {
+    var fname = req.body.firstname;
+    var mname = req.body.middlename;
+    var lname = req.body.lastname;
     var program = req.body.program;
     var purpose = req.body.purpose;
-    var sql = "INSERT INTO `TBL_TRANSACTIONS` (`TRANSACTION_ID`, `TRANSACTION_NAME`, `TRANSACTION_DESCRIPTION`) VALUES (NULL, ?, ?) ";
-    pool.query(sql, [program,purpose], function (error, results, fields) {
+    var sql = "INSERT INTO `TBL_TRANSACTIONS` (`TRANSACTION_ID`, `TRANSACTION_NAME`,`TRANSACTION_MIDDLENAME`,`TRANSACTION_LASTNAME`, `TRANSACTION_PROGRAM` ,`TRANSACTION_PURPOSE`) VALUES (NULL, ?, ?,?,?,?) ";
+    pool.query(sql, [fname,mname,lname,program,purpose], function (error, results, fields) {
         if (error) {
             //req.body.program;
             console.log(error);

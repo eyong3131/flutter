@@ -4,11 +4,15 @@ import 'dart:convert' as convert;
 //import 'package:package:project3/modules/login/pages/home_page.dart';
 //import 'package:package:project3/modules/login/widgets/loginbutton_widget.dart';
 
+// @Lester
 import '../widgets/dropdown_widget.dart';
 import '../widgets/header_widget.dart';
 import '../widgets/forgot_widget.dart';
 import '../widgets/signup_widget.dart';
 import 'package:http/http.dart' as http;
+
+// @Boss Gelang
+import '../../dashboard/dashboard_handler.dart';
 
 //password decrypt test
 // @Leo De Guzman
@@ -151,7 +155,7 @@ class _LoginpageState extends State<Loginpage> {
     };
     //#4 body url
     // ip needs to be changed on every dev device
-    var url = Uri.parse('http://192.168.1.15:3306/api/hash_test');
+    var url = Uri.parse('http://192.168.1.3:3306/api/hash_test');
     var client = http.Client();
     var response = await client.post(url);
     if (response.statusCode == 200) {
@@ -255,11 +259,24 @@ class _LoginpageState extends State<Loginpage> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               //Decrypt(_password!, hashed, _name!, username);
+                              /*
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                       content: Text(Decrypt(_password!, hashed,
                                               _name!, username)
                                           .check)));
+                                          */
+                              Decrypt(_password!, hashed, _name!, username)
+                                      .check
+                                  ? Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DashboardHandler()),
+                                    )
+                                  : ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text("Wrong Password")));
                             }
                           },
                           child: const Text(

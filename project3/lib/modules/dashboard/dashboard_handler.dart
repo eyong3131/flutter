@@ -1,10 +1,14 @@
+// @Boss Gelang
 import 'package:flutter/material.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:project3/modules/dashboard/dashboard.dart';
 import 'package:project3/modules/dashboard/monitor.dart';
 import 'package:project3/modules/dashboard/qwing_list.dart';
 
-class MyApp extends StatelessWidget {
+// @ Lester
+import '../login/pages/login_page.dart';
+
+class DashboardHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,6 +33,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //controller for pages
   PageController page = PageController();
 
   @override
@@ -135,7 +140,12 @@ class _MyHomePageState extends State<MyHomePage> {
               SideMenuItem(
                 priority: 6,
                 title: 'Logout',
-                onTap: () async {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Loginpage()),
+                  );
+                },
                 icon: const Icon(Icons.exit_to_app),
               ),
             ],
@@ -159,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Container(
                   color: Colors.white,
                   child: const Center(
-                    child: const Center(
+                    child: Center(
                       child: monitor(),
                     ),
                   ),

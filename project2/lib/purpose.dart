@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:project2/qnumber.dart';
@@ -15,6 +17,10 @@ class Purpose extends StatefulWidget {
 class _PurposeState extends State<Purpose> {
   //json for list available
   late List<Transaction> _json;
+  late List<Transaction> _tmpjson;
+
+  bool isSubmit = false;
+  bool isLoaded = false;
   //should be a list of program as json
   final List<String> progItems = [
     'BSIT',
@@ -32,8 +38,11 @@ class _PurposeState extends State<Purpose> {
   // selected strings in dropdown.
   // will be used to push in db transaction.
   // Pps is for puspose while the Prog is for degree or program.
-  String? selectedPps;
-  String? selectedProg;
+  String? _fname;
+  String? _mname;
+  String? _lname;
+  String? _selectedPps;
+  String? _selectedProg;
 
   // checking for input statuses
   final _formKey = GlobalKey<FormState>();
@@ -57,6 +66,7 @@ class _PurposeState extends State<Purpose> {
     // it will be triggered but it did not
     // @Leo De Guzman
     _loadData();
+    isSubmit ? _tmpLoadData() : () {};
   }
 
   // load data from remote or local database
@@ -71,7 +81,7 @@ class _PurposeState extends State<Purpose> {
       "Authorization": "Basic $base64Str",
     };
     //#4 body url
-    var url = Uri.parse('http://192.168.1.15:3306/api/qwing/transactionPull');
+    var url = Uri.parse('http://192.168.1.3:3306/api/qwing/transactionPull');
     var client = http.Client();
     var response = await client.post(url);
     if (response.statusCode == 200) {
@@ -88,8 +98,40 @@ class _PurposeState extends State<Purpose> {
     }
   }
 
+  void _tmpLoadData() async {
+    //#3 header
+    var bytes = convert.utf8.encode('Transaction:Transaction');
+    var base64Str = convert.base64.encode(bytes);
+    // ignore: unused_local_variable
+    var header = {
+      "Content-type": "application/json",
+      "Accept": "application/json",
+      "Authorization": "Basic $base64Str",
+    };
+    //#4 body url
+    var url = Uri.parse('http://192.168.1.3:3306/api/qwing/transactionPull');
+    var client = http.Client();
+    var response = await client.post(url);
+    isSubmit = true;
+    if (response.statusCode == 200) {
+      //#5 tried also removing the setState here but it is not
+      // loading the json so i had to bring it back here
+      // The  " ! " in the variable is a null checker and it is
+      // needed on a variable that does not accept null e.g String? or int?.
+      // that json.index needs more of refactoring in the other stages
+      // eg username or email
+      setState(() {
+        _tmpjson = transactionFromJson(response.body);
+        isLoaded = true;
+        print("loaded");
+        //_json == null ? print("please wait") : print(_json[0].transactionName);
+      });
+    }
+  }
+
   //pass instruction on what should be done on carried data
-  _passData(String? program, String? purpose) async {
+  _passData(String? name, String? middle, String? last, String? program,
+      String? purpose) async {
     //header
     var bytes = convert.utf8.encode('Transaction:Transaction');
     var base64Str = convert.base64.encode(bytes);
@@ -99,11 +141,19 @@ class _PurposeState extends State<Purpose> {
       "Authorization": "Basic $base64Str",
     };
     //body and url
-    var body = convert.json.encode({'program': program, 'purpose': purpose});
-    var url = Uri.parse('http://192.168.1.15:3306/api/qwing/transactionPush');
+    var body = convert.json.encode({
+      'firstname': name,
+      'middlename': middle,
+      'lastname': last,
+      'program': program,
+      'purpose': purpose
+    });
+    var url = Uri.parse('http://192.168.1.3:3306/api/qwing/transactionPush');
     var client = http.Client();
     var response = await client.post(url, body: body, headers: header);
-    if (response.statusCode == 200) {}
+    if (response.statusCode == 200) {
+      print('success0');
+    }
   }
 
   @override
@@ -174,7 +224,10 @@ class _PurposeState extends State<Purpose> {
                   validator: (fname) {
                     if (fname == null || fname.isEmpty) {
                       return 'Please enter your first name.';
+                    } else {
+                      _fname = fname;
                     }
+                    return null;
                   },
                   decoration: const InputDecoration(
                     hintText: "ENTER YOUR FIRST NAME",
@@ -206,7 +259,10 @@ class _PurposeState extends State<Purpose> {
                   validator: (mname) {
                     if (mname == null || mname.isEmpty) {
                       return 'Please enter your middle name.';
+                    } else {
+                      _mname = mname;
                     }
+                    return null;
                   },
                   decoration: const InputDecoration(
                     hintText: "ENTER YOUR MIDDLE NAME",
@@ -238,7 +294,10 @@ class _PurposeState extends State<Purpose> {
                   validator: (lname) {
                     if (lname == null || lname.isEmpty) {
                       return 'Please enter your last name.';
+                    } else {
+                      _lname = lname;
                     }
+                    return null;
                   },
                   decoration: const InputDecoration(
                     hintText: "ENTER YOUR LAST NAME",
@@ -314,7 +373,7 @@ class _PurposeState extends State<Purpose> {
                       //Do something when changing the item if you want.
                     },
                     onSaved: (prog) {
-                      selectedProg = prog.toString();
+                      _selectedProg = prog.toString();
                     },
                   ),
                 ),
@@ -377,7 +436,7 @@ class _PurposeState extends State<Purpose> {
                       //Do something when changing the item if you want.
                     },
                     onSaved: (pps) {
-                      selectedPps = pps.toString();
+                      _selectedPps = pps.toString();
                     },
                   ),
                 ),
@@ -394,18 +453,19 @@ class _PurposeState extends State<Purpose> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      _passData(selectedProg, selectedPps);
-                      _loadData();
-                      var lastIndex = _json.length;
+                      _passData(
+                          _fname, _mname, _lname, _selectedProg, _selectedPps);
+                      //isLoaded ? print("yes") : print("no");
+                      var lastIndex = _tmpjson.length;
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
                                 // do add an incremental value to the selected list
                                 QueueNum(
-                                    qnum: selectedProg! +
+                                    qnum: _selectedProg! +
                                         ' - ' +
-                                        _json[lastIndex - 1]
+                                        _tmpjson[lastIndex - 1]
                                             .transactionId
                                             .toString())),
                       );
@@ -477,7 +537,10 @@ class _PurposeState extends State<Purpose> {
                             validator: (fname) {
                               if (fname == null || fname.isEmpty) {
                                 return 'Please enter your first name.';
+                              } else {
+                                _fname = fname;
                               }
+                              return null;
                             },
                             decoration: const InputDecoration(
                               hintText: "ENTER YOUR FIRST NAME",
@@ -509,7 +572,10 @@ class _PurposeState extends State<Purpose> {
                             validator: (mname) {
                               if (mname == null || mname.isEmpty) {
                                 return 'Please enter your middle name.';
+                              } else {
+                                _mname = mname;
                               }
+                              return null;
                             },
                             decoration: const InputDecoration(
                               hintText: "ENTER YOUR MIDDLE NAME",
@@ -541,7 +607,10 @@ class _PurposeState extends State<Purpose> {
                             validator: (lname) {
                               if (lname == null || lname.isEmpty) {
                                 return 'Please enter your last name.';
+                              } else {
+                                _lname = lname;
                               }
+                              return null;
                             },
                             decoration: const InputDecoration(
                               hintText: "ENTER YOUR LAST NAME",
@@ -648,7 +717,7 @@ class _PurposeState extends State<Purpose> {
                               //Do something when changing the item if you want.
                             },
                             onSaved: (prog) {
-                              selectedProg = prog.toString();
+                              _selectedProg = prog.toString();
                             },
                           ),
                         ),
@@ -712,7 +781,7 @@ class _PurposeState extends State<Purpose> {
                               //Do something when changing the item if you want.
                             },
                             onSaved: (pps) {
-                              selectedPps = pps.toString();
+                              _selectedPps = pps.toString();
                             },
                           ),
                         ),
@@ -729,12 +798,21 @@ class _PurposeState extends State<Purpose> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
+                              _passData(_fname, _mname, _lname, _selectedProg,
+                                  _selectedPps);
+                              _loadData();
+                              var lastIndex = _json.length;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => QueueNum(
-                                          qnum: 'BSIT',
-                                        )),
+                                    builder: (context) =>
+                                        // do add an incremental value to the selected list
+                                        QueueNum(
+                                            qnum: _selectedProg! +
+                                                ' - ' +
+                                                _json[lastIndex - 1]
+                                                    .transactionId
+                                                    .toString())),
                               );
                             }
                           },

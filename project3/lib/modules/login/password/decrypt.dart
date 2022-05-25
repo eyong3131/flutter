@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class Decrypt {
   static String? _username;
   static String? _password;
-  static String? _check;
+  static bool? _check;
 
   get publicUsername => _username;
   get publicPassword => _password;
@@ -26,10 +26,10 @@ class Decrypt {
     if (identical(username, name) && identical(digest, hashed)) {
       _username = username;
       _password = password;
-      _check = "Correct Credential";
+      _check = true;
       print("Correct Credential");
     } else {
-      _check = "Wrong Credential";
+      _check = false;
       print("Wrong Credential");
     }
   }
