@@ -4,9 +4,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:project2/qnumber.dart';
-import './classes/json/transaction.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+//json classes
+import './classes/json/transaction.dart';
+import './classes/json/programList.dart';
 
 class Purpose extends StatefulWidget {
   const Purpose({Key? key}) : super(key: key);
@@ -17,17 +21,23 @@ class Purpose extends StatefulWidget {
 
 class _PurposeState extends State<Purpose> {
   //json for list available
-  late List<Transaction> _json;
+  //late List<Transaction> _json;
   late List<Transaction> _tmpjson;
 
   bool isLoaded = false;
   bool isSubmit = false;
+  bool isProgItemsLoaded = false;
+
   //should be a list of program as json
+  late List<ProgList> _progList;
+  late List<String> _finalProgList;
+  /*
   final List<String> progItems = [
     'BSIT',
     'BSBA',
     '...',
   ];
+  */
 
   // list of purpose, should also be a json for flexibility
   final List<String> purposeItems = [
@@ -66,11 +76,12 @@ class _PurposeState extends State<Purpose> {
     // tried removing it here since i had setState function in loadData() and thought
     // it will be triggered but it did not
     // @Leo De Guzman
-    _loadData();
+    _transactionProgramList();
   }
 
   // load data from remote or local database
-  void _loadData() async {
+  void _transactionProgramList() async {
+    print("im called");
     //#3 header
     var bytes = convert.utf8.encode('Transaction:Transaction');
     var base64Str = convert.base64.encode(bytes);
@@ -81,10 +92,12 @@ class _PurposeState extends State<Purpose> {
       "Authorization": "Basic $base64Str",
     };
     //#4 body url
-    var url = Uri.parse('http://192.168.1.3:3306/api/qwing/transactionPull');
+    var url =
+        Uri.parse('http://192.168.1.3:3306/api/qwing/transactionProgList');
     var client = http.Client();
     var response = await client.post(url);
     if (response.statusCode == 200) {
+      print("status: OK");
       //#5 tried also removing the setState here but it is not
       // loading the json so i had to bring it back here
       // The  " ! " in the variable is a null checker and it is
@@ -92,11 +105,24 @@ class _PurposeState extends State<Purpose> {
       // that json.index needs more of refactoring in the other stages
       // eg username or email
       setState(() {
-        _json = transactionFromJson(response.body);
-        print("first json loaded");
+        _progList = progListFromJson(response.body);
+        isLoaded = true;
+        print("program json loaded");
         //_json == null ? print("please wait") : print(_json[0].transactionName);
       });
     }
+  }
+
+  void setList() {
+    isLoaded
+        ? () {
+            for (int i = 0; i < _progList.length; i++) {
+              _finalProgList[i] = _progList[i].programAcronym!;
+            }
+            isProgItemsLoaded = true;
+            print(isProgItemsLoaded);
+          }
+        : print(isProgItemsLoaded);
   }
 
   void _tmpLoadData() async {
@@ -164,12 +190,16 @@ class _PurposeState extends State<Purpose> {
         // constraints provide us with maxWidth,maxHeight etc, using
         // which we can show different widgets accordingly
         // @Gelang Code
-        if (constraints.maxWidth <= 768) //mobile
-        {
-          return _pscreen1();
-        } else //desktop
-        {
-          return _pscreen2();
+        if (isProgItemsLoaded) {
+          if (constraints.maxWidth <= 768) //mobile
+          {
+            return _pscreen1();
+          } else //desktop
+          {
+            return _pscreen2();
+          }
+        } else {
+          return spinkit;
         }
 
         // Checking the aspect ratio instead of calculating the specific
@@ -186,6 +216,15 @@ class _PurposeState extends State<Purpose> {
     );
   }
 
+  final spinkit = SpinKitFadingFour(
+    itemBuilder: (BuildContext context, int index) {
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          color: index.isEven ? Colors.red : Colors.green,
+        ),
+      );
+    },
+  );
   Widget _pscreen1() {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -354,7 +393,7 @@ class _PurposeState extends State<Purpose> {
                     dropdownDecoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    items: progItems
+                    items: _finalProgList
                         .map((item) => DropdownMenuItem<String>(
                               value: item,
                               child: Text(
@@ -704,7 +743,7 @@ class _PurposeState extends State<Purpose> {
                             dropdownDecoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            items: progItems
+                            items: _finalProgList
                                 .map((item) => DropdownMenuItem<String>(
                                       value: item,
                                       child: Text(
@@ -807,8 +846,8 @@ class _PurposeState extends State<Purpose> {
                               _formKey.currentState!.save();
                               _passData(_fname, _mname, _lname, _selectedProg,
                                   _selectedPps);
-                              _loadData();
-                              var lastIndex = _json.length;
+                              _transactionProgramList();
+                              var lastIndex = _tmpjson.length;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -817,7 +856,7 @@ class _PurposeState extends State<Purpose> {
                                         QueueNum(
                                             qnum: _selectedProg! +
                                                 ' - ' +
-                                                _json[lastIndex - 1]
+                                                _tmpjson[lastIndex - 1]
                                                     .transactionId
                                                     .toString())),
                               );

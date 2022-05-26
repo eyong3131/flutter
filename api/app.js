@@ -23,7 +23,23 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-// test transaction pull data
+// Transaction Program list
+app.post('/api/qwing/transactionProgList', function (req, res) {
+    pool.query('SELECT  TBL_PROGRAM.PROGRAM_ACRONYM FROM `TBL_PROGRAM`  LIMIT 100', function (error, results, fields) {
+        if (error) {
+            //console.log(results);
+            res.status(500).json({ error: error });
+        } else {
+            for (let index = 0; index < results.length; index++) {
+                const element = results[index];
+                console.log(element);
+            }
+            res.status(200).json(results);
+        };
+    });
+})
+
+// transaction pull data
 app.post('/api/qwing/transactionPull', function (req, res) {
     pool.query('SELECT * FROM `TBL_TRANSACTIONS`', function (error, results, fields) {
         if (error) {
@@ -38,7 +54,7 @@ app.post('/api/qwing/transactionPull', function (req, res) {
         };
     });
 })
-
+// Transaction push
 app.post('/api/qwing/transactionPush', function (req, res) {
     var fname = req.body.firstname;
     var mname = req.body.middlename;
@@ -64,6 +80,8 @@ app.post('/api/qwing/transactionPush', function (req, res) {
 })
 
 
+
+// Login Form hash Test
 app.post('/api/hash_test', function (req, res) {
     pool.query('SELECT * FROM jpdzalmy_rebago_db.hash_test', function (error, results, fields) {
         if (error) {
