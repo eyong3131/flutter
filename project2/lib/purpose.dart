@@ -30,7 +30,6 @@ class _PurposeState extends State<Purpose> {
 
   //should be a list of program as json
   late List<ProgList> _progList;
-  late List<String> _finalProgList;
   /*
   final List<String> progItems = [
     'BSIT',
@@ -81,7 +80,6 @@ class _PurposeState extends State<Purpose> {
 
   // load data from remote or local database
   void _transactionProgramList() async {
-    print("im called");
     //#3 header
     var bytes = convert.utf8.encode('Transaction:Transaction');
     var base64Str = convert.base64.encode(bytes);
@@ -97,7 +95,6 @@ class _PurposeState extends State<Purpose> {
     var client = http.Client();
     var response = await client.post(url);
     if (response.statusCode == 200) {
-      print("status: OK");
       //#5 tried also removing the setState here but it is not
       // loading the json so i had to bring it back here
       // The  " ! " in the variable is a null checker and it is
@@ -105,24 +102,12 @@ class _PurposeState extends State<Purpose> {
       // that json.index needs more of refactoring in the other stages
       // eg username or email
       setState(() {
+        //progListFromJson(response.body);
         _progList = progListFromJson(response.body);
-        isLoaded = true;
-        print("program json loaded");
+        isProgItemsLoaded = true;
         //_json == null ? print("please wait") : print(_json[0].transactionName);
       });
     }
-  }
-
-  void setList() {
-    isLoaded
-        ? () {
-            for (int i = 0; i < _progList.length; i++) {
-              _finalProgList[i] = _progList[i].programAcronym!;
-            }
-            isProgItemsLoaded = true;
-            print(isProgItemsLoaded);
-          }
-        : print(isProgItemsLoaded);
   }
 
   void _tmpLoadData() async {
@@ -150,7 +135,6 @@ class _PurposeState extends State<Purpose> {
       setState(() {
         _tmpjson = transactionFromJson(response.body);
         isLoaded = true;
-        print("loaded");
         //_json == null ? print("please wait") : print(_json[0].transactionName);
       });
     }
@@ -185,35 +169,32 @@ class _PurposeState extends State<Purpose> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        // constraints provide us with maxWidth,maxHeight etc, using
-        // which we can show different widgets accordingly
-        // @Gelang Code
-        if (isProgItemsLoaded) {
-          if (constraints.maxWidth <= 768) //mobile
-          {
-            return _pscreen1();
-          } else //desktop
-          {
-            return _pscreen2();
-          }
-        } else {
-          return spinkit;
-        }
-
-        // Checking the aspect ratio instead of calculating the specific
-        // pixel width Since some smartphone has 4k resolution
-        //  still need of some polishing in this code
-        //  @Leo De Guzman
-        /*
+    return isProgItemsLoaded
+        ? LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              // constraints provide us with maxWidth,maxHeight etc, using
+              // which we can show different widgets accordingly
+              // @Gelang Code
+              if (constraints.maxWidth <= 768) //mobile
+              {
+                return _pscreen1();
+              } else //desktop
+              {
+                return _pscreen2();
+              }
+              // Checking the aspect ratio instead of calculating the specific
+              // pixel width Since some smartphone has 4k resolution
+              //  still need of some polishing in this code
+              //  @Leo De Guzman
+              /*
         if (getDeviceType()) {
           return _pscreen1();
         }
         return _pscreen2();
         */
-      },
-    );
+            },
+          )
+        : spinkit;
   }
 
   final spinkit = SpinKitFadingFour(
@@ -393,11 +374,11 @@ class _PurposeState extends State<Purpose> {
                     dropdownDecoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    items: _finalProgList
+                    items: _progList
                         .map((item) => DropdownMenuItem<String>(
-                              value: item,
+                              value: item.programAcronym.toString(),
                               child: Text(
-                                item,
+                                item.programAcronym.toString(),
                                 style: const TextStyle(
                                   fontSize: 14,
                                 ),
@@ -743,11 +724,11 @@ class _PurposeState extends State<Purpose> {
                             dropdownDecoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            items: _finalProgList
+                            items: _progList
                                 .map((item) => DropdownMenuItem<String>(
-                                      value: item,
+                                      value: item.programAcronym.toString(),
                                       child: Text(
-                                        item,
+                                        item.programAcronym.toString(),
                                         style: const TextStyle(
                                           fontSize: 14,
                                         ),
