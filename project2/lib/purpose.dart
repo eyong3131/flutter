@@ -90,8 +90,7 @@ class _PurposeState extends State<Purpose> {
       "Authorization": "Basic $base64Str",
     };
     //#4 body url
-    var url =
-        Uri.parse('http://192.168.1.3:3306/api/qwing/transactionProgList');
+    var url = Uri.parse('http://127.0.0.1:3306/api/qwing/transactionProgList');
     var client = http.Client();
     var response = await client.post(url);
     if (response.statusCode == 200) {
@@ -121,7 +120,7 @@ class _PurposeState extends State<Purpose> {
       "Authorization": "Basic $base64Str",
     };
     //#4 body url
-    var url = Uri.parse('http://192.168.1.3:3306/api/qwing/transactionPull');
+    var url = Uri.parse('http://127.0.0.1:3306/api/qwing/transactionPull');
     var client = http.Client();
     var response = await client.post(url);
 
@@ -159,7 +158,7 @@ class _PurposeState extends State<Purpose> {
       'program': program,
       'purpose': purpose
     });
-    var url = Uri.parse('http://192.168.1.3:3306/api/qwing/transactionPush');
+    var url = Uri.parse('http://127.0.0.1:3306/api/qwing/transactionPush');
     var client = http.Client();
     var response = await client.post(url, body: body, headers: header);
     if (response.statusCode == 200) {
@@ -376,9 +375,9 @@ class _PurposeState extends State<Purpose> {
                     ),
                     items: _progList
                         .map((item) => DropdownMenuItem<String>(
-                              value: item.programAcronym.toString(),
+                              value: item.programAcronym!.toString(),
                               child: Text(
-                                item.programAcronym.toString(),
+                                item.programAcronym!.toString(),
                                 style: const TextStyle(
                                   fontSize: 14,
                                 ),
@@ -477,9 +476,9 @@ class _PurposeState extends State<Purpose> {
                           isSubmit = true;
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            _tmpLoadData();
                             _passData(_fname, _mname, _lname, _selectedProg,
                                 _selectedPps);
+                            _tmpLoadData();
                             //isLoaded ? print("yes") : print("no");
                             Timer(Duration(seconds: 2), () {
                               var lastIndex = _tmpjson.length;
@@ -726,9 +725,9 @@ class _PurposeState extends State<Purpose> {
                             ),
                             items: _progList
                                 .map((item) => DropdownMenuItem<String>(
-                                      value: item.programAcronym.toString(),
+                                      value: item.programAcronym!.toString(),
                                       child: Text(
-                                        item.programAcronym.toString(),
+                                        item.programAcronym!.toString(),
                                         style: const TextStyle(
                                           fontSize: 14,
                                         ),
