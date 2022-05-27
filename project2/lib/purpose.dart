@@ -109,7 +109,8 @@ class _PurposeState extends State<Purpose> {
     }
   }
 
-  void _tmpLoadData() async {
+  _tmpLoadData(String? name, String? middle, String? last, String? program,
+      String? purpose) async {
     //#3 header
     var bytes = convert.utf8.encode('Transaction:Transaction');
     var base64Str = convert.base64.encode(bytes);
@@ -119,7 +120,16 @@ class _PurposeState extends State<Purpose> {
       "Accept": "application/json",
       "Authorization": "Basic $base64Str",
     };
-    //#4 body url
+    //#4 body
+    var body = convert.json.encode({
+      'firstname': name,
+      'middlename': middle,
+      'lastname': last,
+      'program': program,
+      'purpose': purpose
+    });
+
+    //URL
     var url = Uri.parse('http://127.0.0.1:3306/api/qwing/transactionPull');
     var client = http.Client();
     var response = await client.post(url);
@@ -478,9 +488,14 @@ class _PurposeState extends State<Purpose> {
                             _formKey.currentState!.save();
                             _passData(_fname, _mname, _lname, _selectedProg,
                                 _selectedPps);
-                            _tmpLoadData();
-                            //isLoaded ? print("yes") : print("no");
+                            //this is not practical but it is working for now
                             Timer(Duration(seconds: 2), () {
+                              _tmpLoadData(_fname, _mname, _lname,
+                                  _selectedProg, _selectedPps);
+                            });
+                            //due to either slow internet or bad code, I had to
+                            //slow down execution time so the _tmojson can load in time
+                            Timer(Duration(seconds: 3), () {
                               var lastIndex = _tmpjson.length;
                               Navigator.push(
                                 context,
@@ -827,7 +842,7 @@ class _PurposeState extends State<Purpose> {
                               _passData(_fname, _mname, _lname, _selectedProg,
                                   _selectedPps);
                               _transactionProgramList();
-                              var lastIndex = _tmpjson.length;
+                              var lastIndex = _tmpjson.length - 1;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
