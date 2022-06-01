@@ -12,7 +12,7 @@ import '../widgets/signup_widget.dart';
 import 'package:http/http.dart' as http;
 
 // @Boss Gelang
-import '../../dashboard/dashboard_handler.dart';
+import '../../dashboard/main.dart';
 
 //password decrypt test
 // @Leo De Guzman
@@ -155,7 +155,7 @@ class _LoginpageState extends State<Loginpage> {
     };
     //#4 body url
     // ip needs to be changed on every dev device
-    var url = Uri.parse('http://192.168.1.3:3306/api/hash_test');
+    var url = Uri.parse('http://127.0.0.1:3306/api/hash_test');
     var client = http.Client();
     var response = await client.post(url);
     if (response.statusCode == 200) {
@@ -271,8 +271,7 @@ class _LoginpageState extends State<Loginpage> {
                                   ? Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              DashboardHandler()),
+                                          builder: (context) => MyApp()),
                                     )
                                   : ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
