@@ -836,27 +836,38 @@ class _PurposeState extends State<Purpose> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                              _passData(_fname, _mname, _lname, _selectedProg,
-                                  _selectedPps);
-                              _transactionProgramList();
-                              var lastIndex = _tmpjson.length - 1;
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        // do add an incremental value to the selected list
-                                        QueueNum(
-                                            qnum: _selectedProg! +
-                                                ' - ' +
-                                                _tmpjson[lastIndex - 1]
-                                                    .transactionId
-                                                    .toString())),
-                              );
-                            }
-                          },
+                          onPressed: isSubmit
+                              ? null
+                              : () {
+                                  isSubmit = true;
+                                  if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
+                                    _passData(_fname, _mname, _lname,
+                                        _selectedProg, _selectedPps);
+                                    //this is not practical but it is working for now
+                                    Timer(Duration(seconds: 2), () {
+                                      _tmpLoadData(_fname, _mname, _lname,
+                                          _selectedProg, _selectedPps);
+                                    });
+                                    //due to either slow internet or bad code, I had to
+                                    //slow down execution time so the _tmojson can load in time
+                                    Timer(Duration(seconds: 3), () {
+                                      var lastIndex = _tmpjson.length;
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                // do add an incremental value to the selected list
+                                                QueueNum(
+                                                    qnum: _selectedProg! +
+                                                        ' - ' +
+                                                        _tmpjson[lastIndex - 1]
+                                                            .transactionId
+                                                            .toString())),
+                                      );
+                                    });
+                                  }
+                                },
                           child: const Text(
                             "GENERATE\nTRANSACTION\nNUMBER",
                             textAlign: TextAlign.center,

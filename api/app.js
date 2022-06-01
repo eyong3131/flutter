@@ -39,6 +39,34 @@ app.post('/api/qwing/transactionProgList', function (req, res) {
     });
 })
 
+/*
+SELECT TRANSACTION_ID FROM TBL_TRANSACTIONS WHERETRANSACTION_NAME = ? AND TRANSACTION_MIDDLENAME = ? AND TRANSACTION_LASTNAME = ? AND TRANSACTION_TIMESTAMP <= CURRENT_TIMESTAMPORDER BY TRANSACTION_TIMESTAMP DESC
+*/
+// Transaction push
+app.post('/api/qwing/transactionId', function (req, res) {
+    var fname = req.body.firstname;
+    var mname = req.body.middlename;
+    var lname = req.body.lastname;
+    var program = req.body.program;
+    var purpose = req.body.purpose;
+    var sql = "SELECT TRANSACTION_ID FROM TBL_TRANSACTIONS WHERETRANSACTION_NAME = ? AND TRANSACTION_MIDDLENAME = ? AND TRANSACTION_LASTNAME = ? AND TRANSACTION_TIMESTAMP <= CURRENT_TIMESTAMPORDER BY TRANSACTION_TIMESTAMP DESC";
+    pool.query(sql, [fname,mname,lname,program,purpose], function (error, results, fields) {
+        if (error) {
+            //req.body.program;
+            console.log(error);
+            res.status(500).json({ error: error });
+        } else {
+            /*
+            for (let index = 0; index < results.length; index++) {
+                const element = results[index];
+                console.log(element);
+            }
+            */
+            req.body.program;
+        };
+    });
+})
+
 // transaction pull data
 app.post('/api/qwing/transactionPull', function (req, res) {
     pool.query('SELECT * FROM `TBL_TRANSACTIONS`', function (error, results, fields) {
