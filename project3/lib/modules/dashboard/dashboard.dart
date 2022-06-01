@@ -9,6 +9,7 @@ class dashboard extends StatefulWidget {
 }
 
 class _dashboardState extends State<dashboard> {
+  var _screenHeight;
 
   int cancel_w1 = 5, q_w1 = 21, done_w1 = 19; //dummy data for dashboard (window 1-6)
   int cancel_w2 = 7, q_w2 = 12, done_w2 = 29;
@@ -19,6 +20,7 @@ class _dashboardState extends State<dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    _screenHeight = MediaQuery.of(context).size.height;
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           // constraints provide us with maxWidth,maxHeight etc, using
@@ -199,177 +201,181 @@ class _dashboardState extends State<dashboard> {
 
   Widget _windowSc1(cancel, q, done)
   {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        child: Column(
-          children: [
-            const SizedBox(height:30),
-            Container(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Container(//CANCELLED
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 250,
-                            height: 90,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey, width: 5),
-                              borderRadius: BorderRadius.circular(30),
-                              color: Color.fromARGB(255, 14, 111, 141),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                "CANCEL",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 40,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 250,
-                            height: 250,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
+    return SingleChildScrollView(
+      primary: false,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          height: _screenHeight*.80,
+          child: Column(
+            children: [
+              const SizedBox(height:30),
+              Container(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Container(//CANCELLED
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 250,
+                              height: 90,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey, width: 5),
+                                borderRadius: BorderRadius.circular(30),
                                 color: Color.fromARGB(255, 14, 111, 141),
-                                width: 12,
                               ),
-                              borderRadius: const BorderRadius.all(Radius.circular(200))
-                            ),
-                            child: Center(
-                              child: Text(
-                                "$cancel",
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 78, 78, 78),
-                                fontSize: 80,
+                              child: const Center(
+                                child: Text(
+                                  "CANCEL",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 40,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                    ),
-                    ),
-                  ),
-                  
-                  Expanded(
-                    child: Container(//QUEUE
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 250,
-                            height: 90,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey, width: 5),
-                              borderRadius: BorderRadius.circular(30),
-                              color: Color.fromARGB(255, 14, 111, 141),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                "QUEUE",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                            Container(
+                              width: 250,
+                              height: 250,
+                              decoration: BoxDecoration(
                                 color: Colors.white,
-                                fontSize: 40,
+                                border: Border.all(
+                                  color: Color.fromARGB(255, 14, 111, 141),
+                                  width: 12,
+                                ),
+                                borderRadius: const BorderRadius.all(Radius.circular(200))
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "$cancel",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 78, 78, 78),
+                                  fontSize: 80,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Container(
-                            width: 290,
-                            height: 290,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
+                          ],
+                      ),
+                      ),
+                    ),
+                    
+                    Expanded(
+                      child: Container(//QUEUE
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 250,
+                              height: 90,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey, width: 5),
+                                borderRadius: BorderRadius.circular(30),
                                 color: Color.fromARGB(255, 14, 111, 141),
-                                width: 12,
                               ),
-                              borderRadius: const BorderRadius.all(Radius.circular(200))
-                            ),
-                            child: Center(
-                              child: Text(
-                                "$q",
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 78, 78, 78),
-                                fontSize: 90,
+                              child: const Center(
+                                child: Text(
+                                  "QUEUE",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 40,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                    ),
-                    ),
-                  ),
-
-                  Expanded(
-                    child: Container(//DONE
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 250,
-                            height: 90,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey, width: 5),
-                              borderRadius: BorderRadius.circular(30),
-                              color: Color.fromARGB(255, 14, 111, 141),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                "DONE",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                            Container(
+                              width: 290,
+                              height: 290,
+                              decoration: BoxDecoration(
                                 color: Colors.white,
-                                fontSize: 40,
+                                border: Border.all(
+                                  color: Color.fromARGB(255, 14, 111, 141),
+                                  width: 12,
+                                ),
+                                borderRadius: const BorderRadius.all(Radius.circular(200))
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "$q",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 78, 78, 78),
+                                  fontSize: 90,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Container(
-                            width: 250,
-                            height: 250,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
+                          ],
+                      ),
+                      ),
+                    ),
+    
+                    Expanded(
+                      child: Container(//DONE
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 250,
+                              height: 90,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey, width: 5),
+                                borderRadius: BorderRadius.circular(30),
                                 color: Color.fromARGB(255, 14, 111, 141),
-                                width: 12,
                               ),
-                              borderRadius: const BorderRadius.all(Radius.circular(200))
-                            ),
-                            child: Center(
-                              child: Text(
-                                "$done",
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 78, 78, 78),
-                                fontSize: 80,
+                              child: const Center(
+                                child: Text(
+                                  "DONE",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 40,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                    ),
-                    ),
-                  )
-                  
-                ],
+                            Container(
+                              width: 250,
+                              height: 250,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Color.fromARGB(255, 14, 111, 141),
+                                  width: 12,
+                                ),
+                                borderRadius: const BorderRadius.all(Radius.circular(200))
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "$done",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 78, 78, 78),
+                                  fontSize: 80,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                      ),
+                      ),
+                    )
+                    
+                  ],
+                ),
+    
               ),
-
-            ),
-          ]
+            ]
+          ),
         ),
       ),
     );
